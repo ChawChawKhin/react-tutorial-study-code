@@ -10,3 +10,4 @@
 > React Blog Post Project Tutorial (The learning topics are stated below) [**Code**](https://github.com/ChawChawKhin/react-tutorial-study-code/tree/main/16tut)
 16. Learn React Router with a Beginners Project | Learn React JS
 17. React Router Hooks and Links | React JS Beginner Project
+18. React CSS Width and Height Settings | React App Full Screen Size
