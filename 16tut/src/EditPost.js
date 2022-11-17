@@ -1,11 +1,17 @@
-import { useEffect } from "react"
-import { useParams, Link } from "react-router-dom"
+import { format } from "date-fns";
+import { useEffect, useContext, useState } from "react"
+import { useParams, Link, useNavigate } from "react-router-dom"
+import DataContext from './context/DataContext';
+import api from "./api/posts.js";
 
-const EditPost = ({
-    posts, handleEdit, editBody, setEditBody, editTitle, setEditTitle
-}) => {
+const EditPost = () => {
+    const [editTitle, setEditTitle] = useState('');
+    const [editBody, setEditBody] = useState('');
+    const { posts, setPosts } = useContext(DataContext);
+    const history = useNavigate();
     const { id } = useParams();
     const post = posts.find(post => (post.id).toString() === id);
+    
 
     useEffect(() => {
         if(post) {
@@ -14,6 +20,21 @@ const EditPost = ({
         }
 
     }, [post, setEditTitle, setEditBody])
+
+    const handleEdit = async (id) => {
+        const datetime = format(new Date(), 'MMMM dd, yyyy pp');
+        const updatedPost = { id, title: editTitle, datetime, body: editBody };
+        try {
+            const response = await api.put(`/posts/${id}`, updatedPost);
+            setPosts(posts.map(post => post.id === id ? { ...response.data } : post));
+            setEditTitle('');
+            setEditBody('');
+            history('/');
+        } catch (err) {
+            console.log(`Error: ${err.message}`);
+        }
+    }
+
   return (
     <main className="NewPost">
         { editTitle &&
